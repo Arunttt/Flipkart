@@ -1,0 +1,38 @@
+.inputStyle{
+    padding: '10px';
+    border-radius: '5px 0 0 5px';
+    border: '1px solid #ccc';
+    outline: 'none';
+    width: '200px';
+}
+.card-img-top {
+    display: block;  /* Makes the image a block element */
+    margin-left: auto; /* Horizontally center */
+    margin-right: auto; /* Horizontally center */
+    width: 40%; /* Adjust the width as per your requirement */
+    height: auto; /* Maintains the aspect ratio */
+  }
+
+  .swiper-button-prev,
+.swiper-button-next {
+    position: absolute;
+    top: 50%;
+    z-index: 10;
+    background-color: rgba(0, 0, 0, 0.5);
+    color: white;
+    border: none;
+    padding: 10px;
+    border-radius: 50%;
+    cursor: pointer;
+    transform: translateY(-50%);
+}
+
+.swiper-button-prev {
+    left: 10px;
+}
+
+.swiper-button-next {
+    right: 10px;
+}
+
+  

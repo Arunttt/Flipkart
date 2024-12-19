@@ -5,6 +5,7 @@ import { useDispatch } from 'react-redux';
 import { useNavigate, useParams } from 'react-router-dom';
 import { ToastContainer, toast } from 'react-toastify';
 
+
 const ViewProduct = () => {
   // const productId = useSelector((state) => state.product.selectedProductId);
   const [items, setItems] = useState([]);
@@ -156,6 +157,7 @@ const ViewProduct = () => {
   return (
     <>
       <div className="container-fluid">
+      {/* w-96 p-4 pl-[13px] md:w-auto md:p-0 */}
         <ToastContainer />
         <div className="row">
           <div className="col-md-6 p-4 flex items-center justify-center border-2 border-grove">
@@ -167,7 +169,7 @@ const ViewProduct = () => {
                   className="w-[20em] transform transition-all duration-300 ease-in-out hover:scale-110"
                 />
                 {/* <br /> */}
-                <div className="fixed bottom-0 left-0 right-0 flex justify-center space-x-4 mt-4">
+                <div className=" bottom-0 left-0 right-0 flex justify-center space-x-4 mt-4">
                   <button
                     onClick={handleAddToCart}
                     disabled={isDisable}  // Disable button if item is added

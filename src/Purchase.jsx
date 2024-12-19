@@ -1,4 +1,5 @@
 import axios from 'axios';
+import { motion } from 'framer-motion';
 import { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
@@ -63,15 +64,21 @@ function Purchase() {
                         1024: { slidesPerView: 4 },
                     }}
                 >
-                    {products.map((product) => (
+                    {products.map((product,index) => (
                         <SwiperSlide key={product._id}>
                             {/* <Link to="/product" key={product._id} 
                             className="block cursor-pointer"
                             onClick={()=> handleProduct(product._id)}> */}
-                            <div className="className='w-0' cursor-pointer bg-white shadow-lg 
+                            <motion.div   initial={{ opacity: 0, x: 100 }}
+                        animate={{
+                            opacity: 1,
+                            x: 0,
+                            y: 10,
+                            transition: { delay: index * 1.0, duration: 2 },
+                        }} className="className='w-0' cursor-pointer bg-white shadow-lg 
                                 rounded-lg overflow-hidden"
                                 onClick={() => handleProduct(product._id)}
-                            >
+                             >
                                 <img
                                     src={product.image}
                                     alt={product.name}
@@ -90,7 +97,7 @@ function Purchase() {
                                     Rating: {product.rating} ★
                                     </span>
                                 </div> */}
-                            </div>
+                            </motion.div>
                             {/* </Link> */}
                         </SwiperSlide>
                     ))}

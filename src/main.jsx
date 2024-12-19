@@ -4,12 +4,14 @@ import { Provider } from 'react-redux';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import CartDetails from './components/CartDetails';
 import DetailsPage from './components/DetailsPage';
+import { Footer } from './components/Footer';
 import Header from './components/Header';
 import LoginPage from './components/LoginPage';
 import ViewProduct from './components/ViewProduct';
 import './index.css';
 import Purchase from './Purchase';
 import store from './store';
+
 createRoot(document.getElementById('root')).render(
   <Provider store={store}>
     {/* <StrictMode> */}
@@ -23,6 +25,7 @@ createRoot(document.getElementById('root')).render(
         <Route path="/details" element={<CartDetails />} />      
         <Route path="/order_details/:id" element={<DetailsPage />} />            
         </Routes>
+        <Footer />
       </BrowserRouter>
     {/* </StrictMode> */}
   </Provider>

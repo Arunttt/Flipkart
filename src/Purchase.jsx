@@ -13,7 +13,7 @@ function Purchase() {
     const navigate = useNavigate();
     const [searchTerm, setSearchTerm] = useState('');
     const [products, setProducts] = useState([]);
-
+    // const [imageSrc,setImageSrc] = useState(null);
 
     const handleSubmit = (e) => {
         e.preventDefault();
@@ -21,6 +21,7 @@ function Purchase() {
     };
 
     const ApiUrl = import.meta.env.VITE_API_URL;
+
 
     useEffect(() => {
         axios.get(`${ApiUrl}/purchase/allProduct`)
@@ -36,6 +37,18 @@ function Purchase() {
             .catch(error => {
                 console.log("Failed:", error);
             });
+        // 
+        // axios.get(`${ApiUrl}/purchase/images/resize`, { responseType: 'blob' })
+        // .then(response => {
+        //   const imageUrl = URL.createObjectURL(response.data);
+        //   setImageSrc(imageUrl);
+        //   console.log(imageSrc);
+        // })
+        // .catch(error => {
+        //   console.error("Error fetching image:", error);
+        // });
+      
+
     }, []);
 
     const handleProduct = (id) => {
@@ -44,7 +57,15 @@ function Purchase() {
     };
     return (
         <>
-
+  {/* {imageSrc ? (
+        <img
+          src={imageSrc}
+          alt="Processed"
+          style={{ border: '1px solid #ccc', padding: '10px' }}
+        />
+      ) : (
+        <p>Loading image...</p>
+      )} */}
             <Carousel />
 
             <div className="container-fluid mt-5">
@@ -104,7 +125,7 @@ function Purchase() {
                 </Swiper>
 
             </div>
-
+                {/*  */}
         </>
     );
 }

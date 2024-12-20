@@ -8,8 +8,8 @@ import { Footer } from './components/Footer';
 import Header from './components/Header';
 import LoginPage from './components/LoginPage';
 import ViewProduct from './components/ViewProduct';
+import { Home } from './Home';
 import './index.css';
-import Purchase from './Purchase';
 import store from './store';
 
 createRoot(document.getElementById('root')).render(
@@ -18,7 +18,8 @@ createRoot(document.getElementById('root')).render(
       <BrowserRouter>
         <Header />
         <Routes>
-          <Route path="/" element={<Purchase />} />
+          {/* <Route path="/" element={<Purchase />} /> */}
+        <Route path="/home" element={ <Home />} />
           <Route path="/login" element={<LoginPage />} />
           <Route path="/product/:id" element={<ViewProduct />} />
           {/* <Route path="/view/:id" element={<SearchProduct />} /> */}

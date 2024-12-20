@@ -99,7 +99,7 @@ function LoginPage() {
 
             localStorage.setItem("username",login.loginUser);
             setTimeout(() =>{
-                 navigate('/');
+                 navigate('/home');
             },3000); 
         }).catch((error)=>{
             console.log("error");
@@ -123,7 +123,7 @@ function LoginPage() {
                 position: "top-right",
             });
             setTimeout(() =>{
-            navigate('/');
+            navigate('/home');
             },3000);
         }) .catch((error) => {
             console.log("error");

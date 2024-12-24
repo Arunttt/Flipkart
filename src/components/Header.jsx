@@ -4,6 +4,8 @@ import { useEffect, useState } from 'react';
 import { FaBars, FaSearch, FaShoppingCart, FaTimes, FaUser } from 'react-icons/fa';
 import { useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
+import { toast } from 'react-toastify';
+
 function Header() {
     const [searchTerm, setSearchTerm] = useState([]);
     const [menuOpen, setMenuOpen] = useState(false);
@@ -61,13 +63,14 @@ function Header() {
 
     const handleProductClick = (id) => {
         // navigate(`./view/${id}`);
+        console.log(`id Chec ${id}`);
         navigate(`./product/${id}`);
         setQuery('');
         setSearchTerm([]);
     }
 
     const redirectTOhome = () => {
-        navigate('/home');
+        navigate('/');
     };
 
     const redirectTologin = () => {
@@ -77,7 +80,12 @@ function Header() {
     const logoutFunction = () => {
         localStorage.removeItem('userRegister');
         localStorage.removeItem('username');
-        navigate('/home');
+                    toast.error("Logout Sucessfully !",{
+                        position:"top-right",
+                    });
+                    setTimeout(() =>{
+                        navigate('/');
+                   },3000); 
     };
 
     return (

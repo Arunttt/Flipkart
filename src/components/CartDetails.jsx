@@ -24,37 +24,37 @@ function CartDetails() {
 
     useEffect(() => {
         const userRegisterData = localStorage.getItem('userRegister');
-            if (userRegisterData) {
-                const userIdFormat = JSON.parse(userRegisterData);
-                if (userIdFormat && userIdFormat.user_id) {
-        let data = { 
-            userId:userIdFormat.user_id,
-            disable: true,
-        };
-        axios.post(`${ApiUrl}/cart/getData`, data)
-            .then(response => {
-                setProduct(response.data.data);
+        if (userRegisterData) {
+            const userIdFormat = JSON.parse(userRegisterData);
+            if (userIdFormat && userIdFormat.user_id) {
+                let data = {
+                    userId: userIdFormat.user_id,
+                    disable: true,
+                };
+                axios.post(`${ApiUrl}/cart/getData`, data)
+                    .then(response => {
+                        setProduct(response.data.data);
 
-                const savedCounts = JSON.parse(localStorage.getItem("cartCounts")) || {};
-                setCounts(savedCounts);
-                toast.success('Cart data fetched successfully!');
-            })
-            .catch(error => {
-                console.error("Error fetching products:", error);
-                toast.error('Failed to fetch cart data. Please try again.');
-            });
-        }else {
-            toast.warning("Invalid session! Redirecting to login.");
-            navigate('/login');
+                        const savedCounts = JSON.parse(localStorage.getItem("cartCounts")) || {};
+                        setCounts(savedCounts);
+                        toast.success('Cart data fetched successfully!');
+                    })
+                    .catch(error => {
+                        console.error("Error fetching products:", error);
+                        toast.error('Failed to fetch cart data. Please try again.');
+                    });
+            } else {
+                toast.warning("Invalid session! Redirecting to login.");
+                navigate('/login');
+            }
         }
-    }
-    else{
-        toast.info("Please log in to access your cart.");
-        setTimeout(() =>{
-                    navigate('/login');
-                },2000);
-    }
-        }, [navigate]);
+        else {
+            toast.info("Please log in to access your cart.");
+            setTimeout(() => {
+                navigate('/login');
+            }, 2000);
+        }
+    }, [navigate]);
 
 
     useEffect(() => {
@@ -108,9 +108,9 @@ function CartDetails() {
 
     return (
         <>
-            <div className="grid grid-cols-12 container h-screen">
-                <div className="col-span-8 ">
-            <ToastContainer />
+            <div className="grid grid-cols-1 sm:grid-cols-2  lg:px-[83px] lg:py-[96px]">
+                <div className=" ">
+                    <ToastContainer />
                     <div className="space-y-6 overflow-y-auto h-[200px]">
                         {product.map((value) => (
                             <div key={value._id} className="flex gap-2 items-center">
@@ -121,8 +121,9 @@ function CartDetails() {
                                     value={value._id}
                                     checked={selectedProductId === value._id}
                                     onChange={() => handleSelectProduct(value._id)}
-                                    className="w-4 h-4"
+                                    className="appearance-none w-4 h-4 border border-gray-400 rounded-none checked:bg-blue-500 checked:border-blue-500"
                                 />
+
 
                                 <img
                                     src={value.image}
@@ -169,7 +170,7 @@ function CartDetails() {
                     </div>
                 </div>
 
-                <div className="col-span-4 bg-gray-100 p-6 shadow-md h-screen sticky top-0">
+                <div className=" bg-gray-100 p-6 shadow-md  sticky top-0">
                     <div className=' border-l p-4 bg-gray-50'>
                         <h3 className="text-lg font-bold mb-4">Price Details</h3>
                         <div className="space-y-2">

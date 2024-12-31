@@ -24,6 +24,27 @@ export const Home = () => {
 
 
     useEffect(() => {
+        const userRegister = JSON.parse(localStorage.getItem("userRegister"));
+        if (userRegister && userRegister.jwtToken) {
+            const token = userRegister.jwtToken;
+            axios.get('/userLogin/profile', {
+                headers: {
+                    'Authorization': `Bearer ${token}`
+                }
+            })
+                .then(response => {
+                    productDetails();
+                })
+                .catch(error => {
+                    console.error('Error:', error.response.data);
+                });
+
+        } else {
+            console.log("JWT Token not found in userRegister.");
+        }
+    }, []);
+
+    const productDetails = () => {
         axios.get(`${ApiUrl}/purchase/allProduct`)
             .then(response => {
                 console.log("<=== API Response ===>", response.data);
@@ -37,7 +58,7 @@ export const Home = () => {
             .catch(error => {
                 console.log("Failed:", error);
             });
-    }, []);
+    }
 
     const handleProduct = (id) => {
         dispatch(setSelectedProductId(id));

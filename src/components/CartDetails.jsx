@@ -96,6 +96,61 @@ function CartDetails() {
         setSelectedProductId(id);
     };
 
+    // const removeProduct = (id) => {
+    //     axios.delete(`${ApiUrl}/cart/productDelete/${id}`)
+    //     .then(response => {
+    //         console.log("<====>",response.data);
+    //     }).catch(error => {
+    //         console.log("error");
+    //     })
+
+    // }
+    const removeProduct = (id,name) => {
+        console.log("id is",id);
+        console.log("name",name);
+        const userRegisterData = localStorage.getItem('userRegister');
+        if (userRegisterData) {
+            const userIdFormat = JSON.parse(userRegisterData);
+            if (userIdFormat && userIdFormat.user_id) {
+                console.log("UserId:", userIdFormat.user_id);
+    
+                const cartKey = `cart_${userIdFormat.user_id}`;
+                let cartData = JSON.parse(localStorage.getItem(cartKey));
+    
+                if (cartData && cartData.length > 0) {
+                    console.log("<===> Original Cart Data:", cartData);
+    
+                    const updatedCart = cartData.filter(product => product.name !== name);
+    
+                    if (cartData.length === updatedCart.length) {
+                        console.log(`No matching product found with ID: ${name}`);
+                    } else {
+                        console.log("<===> Updated Cart Data After Deletion:", updatedCart);
+    
+                        localStorage.setItem(cartKey, JSON.stringify(updatedCart));
+                        console.log(`Product with ID: ${name} has been removed successfully.`);
+                   
+        axios.delete(`${ApiUrl}/cart/productDelete/${id}`)
+        .then(response => {
+            console.log("<====>",response.data);
+        }).catch(error => {
+            console.log("error");
+        })
+
+                    }
+                } else {
+                    console.log("Cart is empty or not found.");
+                }
+            } else {
+                console.log("User ID not found in userRegisterData.");
+            }
+        } else {
+            console.log("userRegisterData not found in localStorage.");
+        }
+    };
+           
+    
+
     const redirectOrderPage = (id) => {
         const selectedProduct = product.find(item => item._id === id);
         const quantity = counts[id] || 1;
@@ -106,12 +161,15 @@ function CartDetails() {
     };
 
 
+
     return (
         <>
             <div className="grid grid-cols-1 sm:grid-cols-2  lg:px-[83px] lg:py-[96px]">
                 <div className=" ">
+
                     <ToastContainer />
                     <div className="space-y-6 overflow-y-auto h-[200px]">
+
                         {product.map((value) => (
                             <div key={value._id} className="flex gap-2 items-center">
 
@@ -123,7 +181,7 @@ function CartDetails() {
                                     onChange={() => handleSelectProduct(value._id)}
                                     className="appearance-none w-4 h-4 border border-gray-400 rounded-none checked:bg-blue-500 checked:border-blue-500"
                                 />
-
+                            
 
                                 <img
                                     src={value.image}
@@ -150,8 +208,16 @@ function CartDetails() {
                                         <button onClick={() => increase(value._id)}>+</button>
                                     </div>
                                 </div>
+                                {/* <button 
+                                    className="text-red-500"
+                                    onClick={() => removeProduct(value._id,value.name)}
+                                >
+                                    Remove
+                                </button> */}
+
                             </div>
                         ))}
+                        
                     </div>
 
                     <div className='border-t mt-4 p-4'>

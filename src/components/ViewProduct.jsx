@@ -15,7 +15,28 @@ const ViewProduct = () => {
   const { id } = useParams();
 
   useEffect(() => {
-    console.log(`id check with name ${id}`);
+      const userRegister = JSON.parse(localStorage.getItem("userRegister"));
+            if (userRegister && userRegister.jwtToken) {
+                const token = userRegister.jwtToken;
+                axios.get('/userLogin/profile', {
+                    headers: {
+                        'Authorization': `Bearer ${token}`
+                    }
+                })
+                    .then(response => {
+                        viewProductDetails();
+                    })
+                    .catch(error => {
+                        console.error('Error:', error.response.data);
+                    });
+    
+            } else {
+                console.log("JWT Token not found in userRegister.");
+            }
+  }, []);
+
+const viewProductDetails = () => {
+      console.log(`id check with name ${id}`);
     axios
       .get(`${ApiUrl}/purchase/watches/${id}`)
       .then((response) => {
@@ -26,8 +47,8 @@ const ViewProduct = () => {
       })
       .catch((error) => {
         console.log('Failed:', error);
-      });
-  }, [id]);
+      });  
+}
 
   const handleAddToCart = () => {
     const userRegisterData = localStorage.getItem('userRegister');

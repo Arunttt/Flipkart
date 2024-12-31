@@ -80,12 +80,12 @@ function Header() {
     const logoutFunction = () => {
         localStorage.removeItem('userRegister');
         localStorage.removeItem('username');
-                    toast.error("Logout Sucessfully !",{
-                        position:"top-right",
-                    });
-                    setTimeout(() =>{
-                        navigate('/');
-                   },3000); 
+        toast.error("Logout Sucessfully !", {
+            position: "top-right",
+        });
+        setTimeout(() => {
+            navigate('/');
+        }, 3000);
     };
 
     return (
@@ -143,14 +143,21 @@ function Header() {
                         )}
                     </div>
 
+                    {localStorage.getItem('username') && localStorage.getItem('username').trim() !== '' ?
+                        <button className="flex items-center px-4 py-2 text-sm bg-blue-500 text-white rounded-md">
+                            <FaUser className="mr-2" />
+                            {localStorage.getItem('username')}
+                        </button>
+                        :
+                        <button
+                            onClick={redirectTologin}
+                            className="flex items-center px-4 py-2 text-sm bg-blue-500 text-white rounded-md"
+                        >
+                            <FaUser className="mr-2" />
+                            Login
+                        </button>
+                    }
 
-                    <button
-                        onClick={redirectTologin}
-                        className="flex items-center px-4 py-2 text-sm bg-blue-500 text-white rounded-md"
-                    >
-                        <FaUser className="mr-2" />
-                        {localStorage.getItem('username') || 'Login'}
-                    </button>
                     <button
                         className="flex items-center px-4 py-2 text-sm bg-yellow-500 text-white rounded-md"
                         onClick={() => navigate('/details')}
@@ -158,13 +165,16 @@ function Header() {
                         <FaShoppingCart className="mr-2" />
                         Cart {count}
                     </button>
-                    <button
-                        onClick={logoutFunction}
-                        className="flex items-center px-4 py-2 text-sm bg-red-500 text-white rounded-md"
-                    >
-                        <FaUser className="mr-2" />
-                        Logout
-                    </button>
+                    {localStorage.getItem('username') && localStorage.getItem('username').trim() !== '' ?
+                        <button
+                            onClick={logoutFunction}
+                            className="flex items-center px-4 py-2 text-sm bg-red-500 text-white rounded-md"
+                        >
+                            <FaUser className="mr-2" />
+                            Logout
+                        </button>
+                        : null
+                    }
                 </nav>
             </div>
 
@@ -199,13 +209,21 @@ function Header() {
 
 
                     <div className="flex flex-col items-start space-y-2 px-4 py-4">
-                        <button
-                            onClick={redirectTologin}
-                            className="flex items-center w-full px-4 py-2 text-sm bg-blue-500 text-white rounded-md"
-                        >
-                            <FaUser className="mr-2" />
-                            {localStorage.getItem('username') || 'Login'}
-                        </button>
+
+
+                        {localStorage.getItem('username') && localStorage.getItem('username').trim() !== '' ?
+                            <button className="flex items-center px-4 py-2 text-sm bg-blue-500 text-white rounded-md">
+                                <FaUser className="mr-2" />
+                                {localStorage.getItem('username')}
+                            </button>
+                            : <button
+                                onClick={redirectTologin}
+                                className="flex items-center w-full px-4 py-2 text-sm bg-blue-500 text-white rounded-md"
+                            >
+                                <FaUser className="mr-2" />
+                                Login
+                            </button>
+                        }
                         <button
                             className="flex items-center w-full px-4 py-2 text-sm bg-yellow-500 text-white rounded-md"
                             onClick={() => navigate('/details')}
@@ -213,13 +231,16 @@ function Header() {
                             <FaShoppingCart className="mr-2" />
                             Cart {count}
                         </button>
-                        <button
-                            onClick={logoutFunction}
-                            className="flex items-center w-full px-4 py-2 text-sm bg-red-500 text-white rounded-md"
-                        >
-                            <FaUser className="mr-2" />
-                            Logout
-                        </button>
+                        {localStorage.getItem('username') && localStorage.getItem('username').trim() !== '' ?
+                            <button
+                                onClick={logoutFunction}
+                                className="flex items-center px-4 py-2 text-sm bg-red-500 text-white rounded-md"
+                            >
+                                <FaUser className="mr-2" />
+                                Logout
+                            </button>
+                            : null
+                        }
                     </div>
                 </nav>
             )}

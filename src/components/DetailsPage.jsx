@@ -85,8 +85,9 @@ function DetailsPage() {
           const response = await axios.post(`${APiUrl}/order/created`, data);
           console.log("== Order Created ==", response.data);
 
-          const amount = (watchesProductDetails?.final_price ?? totalProductAmount ?? 0) * 100;
-
+          const amount = (watchesProductDetails?.rupees ?? totalProductAmount ?? 0) * 100;
+          // const amount = ((watchesProductDetails?.rupees + 3) ?? totalProductAmount ?? 0) * 100;
+        
           const options = {
             key: "rzp_test_AEDCvwqVCMwKP1",
             amount: amount,
@@ -163,7 +164,7 @@ function DetailsPage() {
                 value={storedUserId ? `${storedUserId.firstName} ${storedUserId.lastName}` : ''}
                 onChange={(e) => setName(e.target.value)}
                 required
-                className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-blue-500"
+                className="w-full px-4 py-2 border text-black border-gray-300 rounded-md focus:outline-none focus:ring-blue-500"
               />
             </div>
 
@@ -177,7 +178,7 @@ function DetailsPage() {
                 value={storedUserId ? `${storedUserId.mobileNumber}` : ''}
                 onChange={(e) => setMobileNumber(e.target.value)}
                 required
-                className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-blue-500"
+                className="w-full px-4 py-2 border text-black border-gray-300 rounded-md focus:outline-none focus:ring-blue-500"
               />
             </div>
 
@@ -192,7 +193,7 @@ function DetailsPage() {
                 value={deliveryAddress}
                 onChange={(e) => setDeliveryAddress(e.target.value)}
                 required
-                className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-blue-500"
+                className="w-full px-4 py-2 border text-black border-gray-300 rounded-md focus:outline-none focus:ring-blue-500"
               />
             </div>
 
@@ -206,7 +207,7 @@ function DetailsPage() {
                 value={state}
                 onChange={(e) => setState(e.target.value)}
                 required
-                className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-blue-500"
+                className="w-full px-4 py-2 border text-black border-gray-300 rounded-md focus:outline-none focus:ring-blue-500"
               />
             </div>
 
@@ -217,7 +218,7 @@ function DetailsPage() {
               <input
                 type="number"
                 id="totalAmount"
-                value={totalProductAmount || watchesProductDetails.final_price}
+                value={totalProductAmount || watchesProductDetails.rupees+3}
                 onChange={(e) => setTotalAmount(e.target.value)}
                 required
                 className="w-full px-4 py-2 border text-black border-gray-300 font-bold rounded-md focus:outline-none focus:ring-blue-500"

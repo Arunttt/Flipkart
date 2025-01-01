@@ -105,37 +105,37 @@ function CartDetails() {
     //     })
 
     // }
-    const removeProduct = (id,name) => {
-        console.log("id is",id);
-        console.log("name",name);
+    const removeProduct = (id, name) => {
+        console.log("id is", id);
+        console.log("name", name);
         const userRegisterData = localStorage.getItem('userRegister');
         if (userRegisterData) {
             const userIdFormat = JSON.parse(userRegisterData);
             if (userIdFormat && userIdFormat.user_id) {
                 console.log("UserId:", userIdFormat.user_id);
-    
+
                 const cartKey = `cart_${userIdFormat.user_id}`;
                 let cartData = JSON.parse(localStorage.getItem(cartKey));
-    
+
                 if (cartData && cartData.length > 0) {
                     console.log("<===> Original Cart Data:", cartData);
-    
+
                     const updatedCart = cartData.filter(product => product.name !== name);
-    
+
                     if (cartData.length === updatedCart.length) {
                         console.log(`No matching product found with ID: ${name}`);
                     } else {
                         console.log("<===> Updated Cart Data After Deletion:", updatedCart);
-    
+
                         localStorage.setItem(cartKey, JSON.stringify(updatedCart));
                         console.log(`Product with ID: ${name} has been removed successfully.`);
-                   
-        axios.delete(`${ApiUrl}/cart/productDelete/${id}`)
-        .then(response => {
-            console.log("<====>",response.data);
-        }).catch(error => {
-            console.log("error");
-        })
+
+                        axios.delete(`${ApiUrl}/cart/productDelete/${id}`)
+                            .then(response => {
+                                console.log("<====>", response.data);
+                            }).catch(error => {
+                                console.log("error");
+                            })
 
                     }
                 } else {
@@ -148,17 +148,23 @@ function CartDetails() {
             console.log("userRegisterData not found in localStorage.");
         }
     };
-           
-    
+
+
 
     const redirectOrderPage = (id) => {
-        const selectedProduct = product.find(item => item._id === id);
-        const quantity = counts[id] || 1;
 
-        const productAmount = selectedProduct?.cart_details.total_amount * quantity;
+        if (!id) {
+            toast.warning('Please select a Product.');
+        } else {
+            const selectedProduct = product.find(item => item._id === id);
+            const quantity = counts[id] || 1;
 
-        navigate(`/order_details/${id}`, { state: { totalProductAmount: productAmount } });
-    };
+            const productAmount = selectedProduct?.cart_details.total_amount * quantity;
+
+            navigate(`/order_details/${id}`, { state: { totalProductAmount: productAmount } });
+        };
+    }
+
 
 
 
@@ -181,7 +187,7 @@ function CartDetails() {
                                     onChange={() => handleSelectProduct(value._id)}
                                     className="appearance-none w-4 h-4 border border-gray-400 rounded-none checked:bg-blue-500 checked:border-blue-500"
                                 />
-                            
+
 
                                 <img
                                     src={value.image}
@@ -217,7 +223,7 @@ function CartDetails() {
 
                             </div>
                         ))}
-                        
+
                     </div>
 
                     <div className='border-t mt-4 p-4'>

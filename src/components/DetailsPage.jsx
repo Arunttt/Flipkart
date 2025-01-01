@@ -68,7 +68,7 @@ function DetailsPage() {
 
 
     const userRegister = localStorage.getItem("userRegister");
-    console.log("<===>", userRegister);
+
 
     if (userRegister) {
       const userIdFormat = JSON.parse(userRegister);
@@ -78,16 +78,21 @@ function DetailsPage() {
           mobileNumber: storedUserId.mobileNumber,
           deliveryAddress,
           state,
-          total_amount: totalProductAmount || watchesProductDetails.final_price,
+          total_amount: totalProductAmount || watchesProductDetails.rupees
+          ,
         };
 
         try {
           const response = await axios.post(`${APiUrl}/order/created`, data);
           console.log("== Order Created ==", response.data);
 
-          const amount = (watchesProductDetails?.rupees ?? totalProductAmount ?? 0) * 100;
-          // const amount = ((watchesProductDetails?.rupees + 3) ?? totalProductAmount ?? 0) * 100;
-        
+          let amount = 0;
+          if (watchesProductDetails?.rupees) {
+            amount = (watchesProductDetails.rupees + 3) * 100;
+          } else {
+            amount = (totalProductAmount ?? 0) * 100;
+          }
+
           const options = {
             key: "rzp_test_AEDCvwqVCMwKP1",
             amount: amount,
@@ -218,7 +223,7 @@ function DetailsPage() {
               <input
                 type="number"
                 id="totalAmount"
-                value={totalProductAmount || watchesProductDetails.rupees+3}
+                value={totalProductAmount || watchesProductDetails.rupees + 3}
                 onChange={(e) => setTotalAmount(e.target.value)}
                 required
                 className="w-full px-4 py-2 border text-black border-gray-300 font-bold rounded-md focus:outline-none focus:ring-blue-500"

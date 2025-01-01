@@ -78,7 +78,7 @@ function DetailsPage() {
           mobileNumber: storedUserId.mobileNumber,
           deliveryAddress,
           state,
-          total_amount: totalProductAmount || watchesProductDetails.rupees
+          total_amount: totalProductAmount || watchesProductDetails.rupees + 3
           ,
         };
 
@@ -86,6 +86,8 @@ function DetailsPage() {
           const response = await axios.post(`${APiUrl}/order/created`, data);
           console.log("== Order Created ==", response.data);
 
+          setDeliveryAddress('');
+          setState('');
           let amount = 0;
           if (watchesProductDetails?.rupees) {
             amount = (watchesProductDetails.rupees + 3) * 100;

@@ -89,16 +89,38 @@ function Header() {
     };
 
     return (
-        <header className="w-full bg-white shadow-md">
+        <header className="w-full sticky top-0 z-10 bg-white shadow-md">
             <div className="flex items-center justify-between px-4 py-3 lg:px-8">
                 {/* Logo */}
                 <h4
                     onClick={redirectTOhome}
                     className="text-xl font-bold text-blue-500 cursor-pointer"
                 >
-                    FlipKart
+                    {/* FlipKart */}
+                    <img src="src/assets/flipkart1.png" alt="flipkartImg" className='w-[6em]' />
                 </h4>
+                <div className='hidden md:block'>
+                    {
+                        (() => {
+                            const userRegister = JSON.parse(localStorage.getItem("userRegister"));
+                            if (userRegister && userRegister.role === 'Admin') {
+                                return (
+                                    <button
 
+                                        onClick={(e) => {
+                                            console.log("redirect");
+                                            navigate('/viewOrder');
+                                        }}
+                                        className="flex items-center px-4 py-2 text-sm bg-green-500 text-white rounded-md"
+                                    >
+                                        Order Details View
+                                    </button>
+                                );
+                            }
+                            return null;
+                        })()
+                    }
+                </div>
                 {/* Hamburger Icon for Mobile */}
                 <div className="lg:hidden">
                     {menuOpen ? (
@@ -142,6 +164,7 @@ function Header() {
                             </ul>
                         )}
                     </div>
+
 
                     {localStorage.getItem('username') && localStorage.getItem('username').trim() !== '' ?
                         <button className="flex items-center px-4 py-2 text-sm bg-blue-500 text-white rounded-md">
@@ -210,6 +233,28 @@ function Header() {
 
                     <div className="flex flex-col items-start space-y-2 px-4 py-4">
 
+                        <div className=''>
+                            {
+                                (() => {
+                                    const userRegister = JSON.parse(localStorage.getItem("userRegister"));
+                                    if (userRegister && userRegister.role === 'Admin') {
+                                        return (
+                                            <button
+
+                                                onClick={(e) => {
+                                                    console.log("redirect");
+                                                    navigate('/viewOrder');
+                                                }}
+                                                className="flex items-center px-4 py-2 text-sm bg-green-500 text-white rounded-md"
+                                            >
+                                                Order Details View
+                                            </button>
+                                        );
+                                    }
+                                    return null;
+                                })()
+                            }
+                        </div>
 
                         {localStorage.getItem('username') && localStorage.getItem('username').trim() !== '' ?
                             <button className="flex items-center px-4 py-2 text-sm bg-blue-500 text-white rounded-md">

@@ -4,6 +4,7 @@ import DetailsPage from './components/DetailsPage';
 import { Footer } from './components/Footer';
 import Header from './components/Header';
 import LoginPage from './components/LoginPage';
+import { OrderDetails } from './components/OrderDetails';
 import ViewProduct from './components/ViewProduct';
 import { Home } from './Home';
 
@@ -22,6 +23,7 @@ console.log(shouldHideHeader);
         <Route path="/product/:id" element={<ViewProduct />} />
         <Route path="/details" element={<CartDetails />} />
         <Route path="/order_details/:id" element={<DetailsPage />} />
+        <Route path="/viewOrder" element={<OrderDetails />} />
       </Routes>
       {!shouldHideHeader && <Footer /> }
       </div>

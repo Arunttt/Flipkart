@@ -1,6 +1,14 @@
+import {
+    Button,
+    Dialog,
+    DialogBody,
+    DialogFooter,
+    DialogHeader,
+} from "@material-tailwind/react";
 import axios from 'axios';
 import { motion } from 'framer-motion';
 import React, { useEffect, useRef, useState } from "react";
+import { FaEdit } from 'react-icons/fa';
 import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import 'swiper/css';
@@ -11,9 +19,17 @@ import { setSelectedProductId } from './slices/ProductSlice';
 export const Home = () => {
     const dispatch = useDispatch();
     const navigate = useNavigate();
+    const [modify, setModify] = useState(0);
     const [searchTerm, setSearchTerm] = useState('');
     const [products, setProducts] = useState([]);
+    const [open, setOpen] = React.useState(false);
+    const [proId, setProId] = useState(null);
     const sectionRef = useRef(null);
+
+    const handleOpen = (productId) => {
+        setOpen(!open);
+        console.log(productId);
+    }
 
     const handleSubmit = (e) => {
         e.preventDefault();
@@ -70,6 +86,28 @@ export const Home = () => {
             sectionRef.current.scrollIntoView({ behavior: 'smooth' });
         }
     };
+    const updateProductRupees = (productId, newRupees) => {
+        const rupeesValue = Number(newRupees);
+
+        if (isNaN(rupeesValue)) {
+            console.log("Invalid rupees value!");
+            return;
+        }
+
+        let data = {
+            rupees: rupeesValue,
+        };
+
+        axios.post(`${ApiUrl}/purchase/updateProduct/${productId}`, data)
+            .then(() => {
+                setOpen(false);
+                location.reload();
+            })
+            .catch((err) => {
+                console.log("err", err);
+            });
+    }
+
     return (
         <>
             <div className="bg-[url('/src/assets/photo.png')] bg-cover bg-center sm:h-[400px] lg:h-[600px] xl:h-[520px] flex items-center justify-center">
@@ -125,12 +163,39 @@ export const Home = () => {
                                 rounded-lg overflow-hidden"
                                 onClick={() => handleProduct(product._id)}
                             >
+
+
+
                                 <img
                                     src={product.image}
                                     alt={product.name}
                                     className="w-full h-48 object-contain"
                                 />
+                                <div className="flex items-center justify-center p-2">
+                                    {
+                                        (() => {
+                                            const userRegister = JSON.parse(localStorage.getItem("userRegister"));
+                                            if (userRegister && userRegister.role === 'Admin') {
+                                                return (
+                                                    <button
+                                                        id={`product-btn-${product._id}`}
+                                                        onClick={(e) => {
+                                                            e.stopPropagation();
+                                                            setModify(product.rupees || 0);
+                                                            setProId(product._id);
 
+                                                            handleOpen(product._id);
+                                                        }}
+                                                        className="flex items-center px-2 py-1 text-sm bg-red-500 text-white rounded-md"
+                                                    >
+                                                        <FaEdit /> Edit
+                                                    </button>
+                                                );
+                                            }
+                                            return null;
+                                        })()
+                                    }
+                                </div>
                                 <div className="p-4">
                                     <h3 className="w-64 overflow-hidden text-center text-ellipsis whitespace-nowrap text-xl font-semibold text-gray-800">{product.name}</h3>
                                     <p className="text-gray-600 mt-2 text-center">
@@ -143,8 +208,38 @@ export const Home = () => {
                     ))}
                 </Swiper>
 
+                <Dialog open={open} handler={handleOpen}>
+                    <DialogHeader>Product Edit</DialogHeader>
+                    <DialogBody>
+                        <input
+                            type="number"
+                            value={modify}
+                            onChange={(e) => setModify(e.target.value)}
+                            placeholder="Enter a Rupees"
+                        />
 
-
+                    </DialogBody>
+                    <DialogFooter>
+                        <Button
+                            variant="text"
+                            color="red"
+                            onClick={handleOpen}
+                            className="mr-1"
+                        >
+                            <span>Cancel</span>
+                        </Button>
+                        <Button
+                            variant="gradient"
+                            color="green"
+                            onClick={() => {
+                                updateProductRupees(proId, modify);
+                                handleOpen();
+                            }}
+                        >
+                            <span>Confirm</span>
+                        </Button>
+                    </DialogFooter>
+                </Dialog>
             </div>
 
         </>

@@ -24,18 +24,28 @@ function LoginPage() {
     const ApiUrl = import.meta.env.VITE_API_URL;
 
     const navigate = useNavigate();
-   
+
+    const [selectedRole, setSelectedRole] = useState("Select Role");
+    const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+
+    const roles = ["User", "Admin"];
+
+    const handleRoleClick = (role) => {
+        setSelectedRole(role);
+        setIsDropdownOpen(false);
+    };
+
     const handleClick = () => {
-        
-      
+
         let data = {
-                firstName: register.firstName,
-                lastName: register.lastName,
-                username: register.username,
-                mail: register.mail,
-                mobileNumber: register.mobileNumber
-            };
-            axios.post(`${ApiUrl}/usersLogin/register`,data)
+            firstName: register.firstName,
+            lastName: register.lastName,
+            username: register.username,
+            mail: register.mail,
+            mobileNumber: register.mobileNumber,
+            role: selectedRole,
+        };
+        axios.post(`${ApiUrl}/usersLogin/register`, data)
             .then(response => {
                 console.log(response.data);
                 toast.success("User Details Registered Successful !", {
@@ -44,18 +54,18 @@ function LoginPage() {
                 localStorage.setItem("username", response.data.user.username);
                 localStorage.setItem("userRegister", JSON.stringify(response.data.user));
                 if (currentPage === 'register') {
-                    setTimeout(() =>{
+                    setTimeout(() => {
                         setCurrentPage('otp');
-                    },1000);   
+                    }, 1000);
                 }
-            }).catch((error)=>{
+            }).catch((error) => {
                 console.log("error");
-                toast.error("User Registered failed !",{
-                    position:"top-right",
+                toast.error("User Registered failed !", {
+                    position: "top-right",
                 });
             })
-        
-        
+
+
     }
 
     const handleOtpChange = (e) => {
@@ -84,59 +94,59 @@ function LoginPage() {
 
     const loginProcess = () => {
         console.log("Logging in with", login);
-        
-        let data = {
-            username:login.loginUser,
-            password:login.loginPassword,
-        };
-        axios.post(`${ApiUrl}/usersLogin/login`,data)
-        .then(response =>{
-            console.log("ok",response.data);
-            localStorage.setItem("userRegister", JSON.stringify(response.data.user));
-            toast.success("login Process Successful !", {
-                position: "top-right",
-            });
 
-            localStorage.setItem("username",login.loginUser);
-            setTimeout(() =>{
-                 navigate('/');
-            },3000); 
-        }).catch((error)=>{
-            console.log("error");
-            toast.error("login Process failed !",{
-                position:"top-right",
-            });
-        })
+        let data = {
+            username: login.loginUser,
+            password: login.loginPassword,
+        };
+        axios.post(`${ApiUrl}/usersLogin/login`, data)
+            .then(response => {
+                console.log("ok", response.data);
+                localStorage.setItem("userRegister", JSON.stringify(response.data.user));
+                toast.success("login Process Successful !", {
+                    position: "top-right",
+                });
+
+                localStorage.setItem("username", login.loginUser);
+                setTimeout(() => {
+                    navigate('/');
+                }, 3000);
+            }).catch((error) => {
+                console.log("error");
+                toast.error("login Process failed !", {
+                    position: "top-right",
+                });
+            })
     };
 
     const userRegister = () => {
         console.log("Register a form");
-        let data ={
-            otp:otp,
-            mobileNumber:register.mobileNumber,
+        let data = {
+            otp: otp,
+            mobileNumber: register.mobileNumber,
             password: password,
         };
-        axios.post(`${ApiUrl}/usersLogin/verify-otp`,data)
-        .then(response => {
-            console.log("Done",response.data);
-            toast.success("Otp and Password Set Successful !", {
-                position: "top-right",
-            });
-            setTimeout(() =>{
-            navigate('/');
-            },3000);
-        }) .catch((error) => {
-            console.log("error");
-            toast.error("Otp and Password failed !",{
-                position:"top-right",
-            });
-        })
+        axios.post(`${ApiUrl}/usersLogin/verify-otp`, data)
+            .then(response => {
+                console.log("Done", response.data);
+                toast.success("Otp and Password Set Successful !", {
+                    position: "top-right",
+                });
+                setTimeout(() => {
+                    navigate('/');
+                }, 3000);
+            }).catch((error) => {
+                console.log("error");
+                toast.error("Otp and Password failed !", {
+                    position: "top-right",
+                });
+            })
     };
 
     return (
         <div className="flex justify-center items-center min-h-screen bg-gray-100 px-4 ">
             <div className="bg-white p-8 rounded-lg shadow-lg w-full max-w-md">
-            <ToastContainer />
+                <ToastContainer />
                 {showLogin ? (
                     <>
                         <h2 className="text-2xl font-semibold text-center mb-6">Login</h2>
@@ -160,7 +170,7 @@ function LoginPage() {
                                 className="w-full p-3 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
                             />
                         </div>
-                        
+
                         <button
                             type="button"
                             onClick={loginProcess}
@@ -168,7 +178,7 @@ function LoginPage() {
                         >
                             Login
                         </button>
-                        
+
                         <p className="text-center text-sm mt-4 text-gray-600">
                             Don't have an account?
                             <span
@@ -182,6 +192,7 @@ function LoginPage() {
                 ) : currentPage === 'register' ? (
                     <>
                         <h2 className="text-2xl font-semibold text-center mb-6">Sign Up</h2>
+
                         <div className="mb-4">
                             <input
                                 type="text"
@@ -234,6 +245,50 @@ function LoginPage() {
                                 className="w-full p-3 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
                             />
                         </div>
+
+                        <div className='mb-4'>
+                            <div className="relative w-full">
+
+                                <button
+                                    type="button"
+                                    onClick={() => setIsDropdownOpen(!isDropdownOpen)}
+                                    className="w-full p-3 border border-gray-300 rounded-lg text-sm text-left bg-white focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                >
+                                    {selectedRole}
+                                    <svg
+                                        className="w-5 h-5 absolute right-3 top-3 pointer-events-none"
+                                        xmlns="http://www.w3.org/2000/svg"
+                                        fill="none"
+                                        viewBox="0 0 24 24"
+                                        stroke="currentColor"
+                                    >
+                                        <path
+                                            strokeLinecap="round"
+                                            strokeLinejoin="round"
+                                            strokeWidth={2}
+                                            d="M19 9l-7 7-7-7"
+                                        />
+                                    </svg>
+                                </button>
+
+
+                                {isDropdownOpen && (
+                                    <div className="absolute z-10 w-full mt-2 bg-white border border-gray-300 rounded-lg shadow-lg">
+                                        {roles.map((role) => (
+                                            <div
+                                                key={role}
+                                                onClick={() => handleRoleClick(role)}
+                                                className="p-3 text-sm text-gray-700 hover:bg-gray-100 cursor-pointer"
+                                            >
+                                                {role}
+                                            </div>
+                                        ))}
+                                    </div>
+                                )}
+                            </div>
+                        </div>
+
+
                         <button
                             type="button"
                             onClick={handleClick}

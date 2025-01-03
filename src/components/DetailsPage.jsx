@@ -75,6 +75,7 @@ function DetailsPage() {
       if (userIdFormat && userIdFormat.user_id) {
         const data = {
           name: `${storedUserId.firstName} ${storedUserId.lastName}`,
+          productName: productDetails.name,
           mobileNumber: storedUserId.mobileNumber,
           deliveryAddress,
           state,
